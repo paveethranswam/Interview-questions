@@ -1,0 +1,44 @@
+q1:
+def maxDifference(px):
+    
+    if(len(px) == 0 or len(px) == 1):
+        return -1
+        
+    max_current_difference = -1
+    min_prev = px[0]
+    
+    # using kadane's algorithm - for maximal subarray sum/difference
+    for i in range(1, len(px)):
+	if(px[i] != px[i-1]): # this is to ensure there is no flat line (same quote values)
+#         	print(max_current_difference)
+        	# max current is the maximum difference
+        	max_current_difference = max(max_current_difference, px[i] - min_prev)
+        	min_prev = min(px[i], min_prev)
+        
+    print(max_current_difference)
+    return max_current_difference
+
+
+
+q2:
+def solution(queryType,query):
+    h_map = {}
+    result = 0
+    key_offset = 0
+    val_offset = 0
+    for i in range(len(queryType)):
+        cmd = queryType[i]
+        query_result = query[i]
+        if(cmd=='insert'):
+            h_map[query_result[0]-key_offset] = query_result[1]-val_offset
+        elif(cmd=='addToKey'):
+            key_offset+=query_result[0]
+
+	elif(cmd=='addToValue'):
+            val_offset+=query_result[0]
+        else:
+            key = query_result[0]-key_offset
+            output = h_map[key] + val_offset
+            result+=output
+            
+    return result
